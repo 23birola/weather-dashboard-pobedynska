@@ -15,12 +15,9 @@ function renderHistory() {
     historySection.appendChild(historyEl);
 })
 }
-renderHistory();
 
-searchBtn.addEventListener('click', function (e) {
-  e.preventDefault();
-  city = searchInput.value;
-  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+function renderTodayWeather() {
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
     .then(response => response.json())
     .then((data) => {
       todaySection.textContent = '';
@@ -44,17 +41,12 @@ searchBtn.addEventListener('click', function (e) {
       weatherIcon.src = `http://openweathermap.org/img/w/${iconCode}.png`;
       weatherIcon.alt = 'weather icon';
       titleEl.append(weatherIcon);
-      
-      if (!historyArr.includes(city)) {
-        historyArr.push(city);
-        const historyEl = document.createElement('button');
-        historyEl.textContent = city;
-        historySection.appendChild(historyEl);
-        //renderHistory();
-        localStorage.setItem('locations', JSON.stringify(historyArr));
-      }
     });
-  fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`)
+}
+
+function renderForcast() {
+  forecastSection.textContent = '';
+    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`)
     .then(response => response.json())
     .then((data) => {
       fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${lon = data[0].lon}&appid=${apiKey}&units=metric`)
@@ -72,7 +64,8 @@ searchBtn.addEventListener('click', function (e) {
             console.log(data);
             console.log(data.list[i].dt_txt);
             const cardImg = document.createElement('img');
-            cardImg.src = '';
+            const iconCode = data.list[i].weather[0].icon;
+            cardImg.src =  `http://openweathermap.org/img/w/${iconCode}.png`;
             const cardTempatureEl = document.createElement('p');
             cardTempatureEl.classList = 'card-text';
             cardTempatureEl.textContent = `Temp: ${data.list[i].main.temp} C°`;
@@ -89,4 +82,27 @@ searchBtn.addEventListener('click', function (e) {
           }
     });
     });
+}
+
+searchBtn.addEventListener('click', function (e) {
+  e.preventDefault();
+  city = searchInput.value;
+  if (!historyArr.includes(city)) {
+        historyArr.push(city);
+        const historyEl = document.createElement('button');
+        historyEl.textContent = city;
+        historySection.appendChild(historyEl);
+        localStorage.setItem('locations', JSON.stringify(historyArr));
+      }
+  renderTodayWeather();
+  renderForcast();
 });
+
+renderHistory();
+
+historySection.addEventListener('click', function (e) {
+  e.preventDefault();
+  city = e.target.textContent;
+  renderTodayWeather();
+  renderForcast();
+})
