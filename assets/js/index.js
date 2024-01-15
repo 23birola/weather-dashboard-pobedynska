@@ -60,28 +60,33 @@ searchBtn.addEventListener('click', function (e) {
       fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${lon = data[0].lon}&appid=${apiKey}&units=metric`)
       .then(response => response.json())
         .then((data) => {
-          const cardEl = document.createElement('div');
-          cardEl.classList = 'card';
-          cardEl.style.width = '18rem';
-          const cardBodyEl = document.creatElement('div');
-          cardBodyEl.classList = 'card-body';
-          const cardTitleEl = document.createElement('h5');
-          cardTitleEl.classList = 'ard-title';
-          const cardImg = document.createElement('img');
-          const tempatureEl = document.createElement('p');
-          tempatureEl.textContent = `Temp: ${data.main.temp} C°`;
-          const windEl = document.createElement('p');
-          windEl.textContent = `Wind: ${data.wind.speed} KPH`;
-          const humidityEl = document.createElement('p');
-          humidityEl.textContent = `Humidity: ${data.main.humidity} %`;
-       <div class="card" style="width: 18rem;">
-           <div class="card-body">       
-      <h5 class="card-title">Card title</h5>
-      <img src="..." class="card-img-top" alt="..."></img>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-        </div>
+          for (let i = 4; i < 39; i = i + 8) {
+            const cardEl = document.createElement('div');
+            cardEl.classList = 'card';
+            cardEl.style.width = '18rem';
+            const cardBodyEl = document.createElement('div');
+            cardBodyEl.classList = 'card-body';
+            const cardTitleEl = document.createElement('h5');
+            cardTitleEl.classList = 'card-title';
+            cardTitleEl.textContent = data.list[i].dt_txt;
+            console.log(data);
+            console.log(data.list[i].dt_txt);
+            const cardImg = document.createElement('img');
+            cardImg.src = '';
+            const cardTempatureEl = document.createElement('p');
+            cardTempatureEl.classList = 'card-text';
+            cardTempatureEl.textContent = `Temp: ${data.list[i].main.temp} C°`;
+            const cardWindEl = document.createElement('p');
+            cardWindEl.classList = 'card-text';
+            console.log(cardTitleEl);
+            cardWindEl.textContent = `Wind: ${data.list[i].wind.speed} KPH`;
+            const cardHumidityEl = document.createElement('p');
+            cardHumidityEl.classList = 'card-text';
+            cardHumidityEl.textContent = `Humidity: ${data.list[i].main.humidity} %`;
+            cardBodyEl.append(cardTitleEl, cardImg, cardTempatureEl, cardWindEl, cardHumidityEl);
+            cardEl.append(cardBodyEl);
+            forecastSection.append(cardEl);
+          }
     });
     });
 });
