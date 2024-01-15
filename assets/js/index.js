@@ -1,7 +1,7 @@
 const apiKey = 'f9b6d6f3a505f0fc5cf493aeb0974820';
 const searchBtn = document.getElementById('search-button');
 const searchInput = document.getElementById('search-input');
-const todaySection = document.getElementById('today');
+const todaySection = document.getElementById('todayForecast');
 const forecastSection = document.getElementById('forecast');
 const historySection = document.getElementById('history');
 let city = '';
@@ -11,8 +11,9 @@ const historyArr = JSON.parse(localStorage.getItem('locations')) ? JSON.parse(lo
 function renderHistory() {
   historyArr.forEach( (element) => { 
   const historyEl = document.createElement('button');
+  historyEl.classList = 'btn btn-secondary'; 
   historyEl.textContent = element;
-    historySection.appendChild(historyEl);
+  historySection.appendChild(historyEl);
 })
 }
 
@@ -41,7 +42,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}
       weatherIcon.src = `http://openweathermap.org/img/w/${iconCode}.png`;
       weatherIcon.alt = 'weather icon';
       titleEl.append(weatherIcon);
-    });
+    }).catch(error => alert(error));
 }
 
 function renderForcast() {
@@ -52,15 +53,20 @@ function renderForcast() {
       fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${lon = data[0].lon}&appid=${apiKey}&units=metric`)
       .then(response => response.json())
         .then((data) => {
+          const forecastTitle = document.createElement('h3');
+          forecastTitle.textContent = '5-Day Forecast:';
+          forecastSection.append(forecastTitle);
           for (let i = 4; i < 39; i = i + 8) {
+            const forecastTitle = document.createElement('h3');
+            forecastTitle.textContent = '5-Day Forecast';
             const cardEl = document.createElement('div');
             cardEl.classList = 'card';
-            cardEl.style.width = '18rem';
+            cardEl.style.width = '12rem';
             const cardBodyEl = document.createElement('div');
             cardBodyEl.classList = 'card-body';
             const cardTitleEl = document.createElement('h5');
             cardTitleEl.classList = 'card-title';
-            cardTitleEl.textContent = data.list[i].dt_txt;
+            cardTitleEl.textContent = dayjs(data.list[i].dt_txt, { format: 'M/D/YYYY, h:mm:ss A' }).format('DD/MM/YYYY');
             console.log(data);
             console.log(data.list[i].dt_txt);
             const cardImg = document.createElement('img');
@@ -87,12 +93,17 @@ function renderForcast() {
 searchBtn.addEventListener('click', function (e) {
   e.preventDefault();
   city = searchInput.value;
+  if (city === '') {
+    alert(`Insert city`);
+    return;
+  }
   if (!historyArr.includes(city)) {
-        historyArr.push(city);
-        const historyEl = document.createElement('button');
-        historyEl.textContent = city;
-        historySection.appendChild(historyEl);
-        localStorage.setItem('locations', JSON.stringify(historyArr));
+      historyArr.push(city);
+      const historyEl = document.createElement('button');
+      historyEl.classList = 'btn btn-secondary';
+      historyEl.textContent = city;
+      historySection.appendChild(historyEl);
+      localStorage.setItem('locations', JSON.stringify(historyArr));
       }
   renderTodayWeather();
   renderForcast();
@@ -103,6 +114,10 @@ renderHistory();
 historySection.addEventListener('click', function (e) {
   e.preventDefault();
   city = e.target.textContent;
+   if (city === '') {
+    alert(`Insert city`);
+    return;
+  }
   renderTodayWeather();
   renderForcast();
 })

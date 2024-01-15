@@ -1,0 +1,13 @@
+.weather-header {
+  background: linear-gradient(to right, #3362BA, #200B4E);
+  color: white;
+}
+.form-control, .btn-secondary {
+  margin-bottom: 7px;
+}
+
+.card {
+  margin-bottom: 10px;
+  background-color: #2D3E50;
+  color: white;
+}
