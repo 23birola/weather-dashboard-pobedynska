@@ -35,10 +35,9 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}
       windEl.textContent = `Wind: ${data.wind.speed} KPH`;
       const humidityEl = document.createElement('p');
       humidityEl.textContent = `Humidity: ${data.main.humidity} %`;
-      console.log(data);
       const iconCode = data.weather[0].icon;
       const weatherIcon = document.createElement('img');
-      weatherIcon.src = `http://openweathermap.org/img/w/${iconCode}.png`;
+      weatherIcon.src = `https://openweathermap.org/img/w/${iconCode}.png`;
       weatherIcon.alt = 'weather icon';
       titleEl.append(weatherIcon);
       todaySection.append(titleEl, tempatureEl, windEl, humidityEl);
@@ -48,7 +47,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}
 
 function renderForcast() {
   forecastSection.textContent = '';
-    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`)
+    fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`)
     .then(response => response.json())
     .then((data) => {
       fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${lon = data[0].lon}&appid=${apiKey}&units=metric`)
@@ -68,17 +67,14 @@ function renderForcast() {
             const cardTitleEl = document.createElement('h5');
             cardTitleEl.classList = 'card-title';
             cardTitleEl.textContent = dayjs(data.list[i].dt_txt, { format: 'M/D/YYYY, h:mm:ss A' }).format('DD/MM/YYYY');
-            console.log(data);
-            console.log(data.list[i].dt_txt);
             const cardImg = document.createElement('img');
             const iconCode = data.list[i].weather[0].icon;
-            cardImg.src =  `http://openweathermap.org/img/w/${iconCode}.png`;
+            cardImg.src =  `https://openweathermap.org/img/w/${iconCode}.png`;
             const cardTempatureEl = document.createElement('p');
             cardTempatureEl.classList = 'card-text';
             cardTempatureEl.textContent = `Temp: ${data.list[i].main.temp} C°`;
             const cardWindEl = document.createElement('p');
             cardWindEl.classList = 'card-text';
-            console.log(cardTitleEl);
             cardWindEl.textContent = `Wind: ${data.list[i].wind.speed} KPH`;
             const cardHumidityEl = document.createElement('p');
             cardHumidityEl.classList = 'card-text';
