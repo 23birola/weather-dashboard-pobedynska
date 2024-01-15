@@ -26,7 +26,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}
       const currentDate = new Date().toLocaleString('en-US', timeZone);
       const formattedDate = dayjs(currentDate, { format: 'M/D/YYYY, h:mm:ss A' }).format('DD/MM/YYYY');
 
-      const titleEl = document.createElement('h1');
+      const titleEl = document.createElement('h2');
       titleEl.className = 'cityTitle';
       titleEl.textContent = `${city} (${formattedDate})`;
       const tempatureEl = document.createElement('p');
@@ -36,12 +36,13 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}
       const humidityEl = document.createElement('p');
       humidityEl.textContent = `Humidity: ${data.main.humidity} %`;
       console.log(data);
-      todaySection.append(titleEl, tempatureEl, windEl, humidityEl);
       const iconCode = data.weather[0].icon;
       const weatherIcon = document.createElement('img');
       weatherIcon.src = `http://openweathermap.org/img/w/${iconCode}.png`;
       weatherIcon.alt = 'weather icon';
       titleEl.append(weatherIcon);
+      todaySection.append(titleEl, tempatureEl, windEl, humidityEl);
+      todaySection.classList = 'todayForecast';
     }).catch(error => alert(error));
 }
 
