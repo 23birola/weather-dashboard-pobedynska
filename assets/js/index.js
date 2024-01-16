@@ -7,6 +7,28 @@ const historySection = document.getElementById('history');
 let city = '';
 const historyArr = JSON.parse(localStorage.getItem('locations')) ? JSON.parse(localStorage.getItem('locations')) : [];
 
+// function that add button to the history section
+
+function addHistoryBtn() {
+  if (!city.match(/[A-Za-z]/) || (city === '')) {
+    alert('Please enter a city and use only letters (no numbers)');
+    return
+  }
+
+  if (city.charAt(0) !== city.charAt(0).toUpperCase()) {
+    city = city.charAt(0).toUpperCase() + city.slice(1);
+  }
+  if (!historyArr.includes(city)) {
+      historyArr.push(city);
+      const historyEl = document.createElement('button');
+      historyEl.classList = 'btn btn-secondary';
+      historyEl.textContent = city;
+      historySection.appendChild(historyEl);
+      localStorage.setItem('locations', JSON.stringify(historyArr));
+      }
+}
+
+// function that render history section
 
 function renderHistory() {
   historyArr.forEach( (element) => { 
@@ -17,9 +39,16 @@ function renderHistory() {
 })
 }
 
+// function that render today weather section
+
 function renderTodayWeather() {
 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
-    .then(response => response.json())
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json()
+  })
     .then((data) => {
       todaySection.textContent = '';
       const timeZone = data.timezone;
@@ -42,13 +71,21 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}
       titleEl.append(weatherIcon);
       todaySection.append(titleEl, tempatureEl, windEl, humidityEl);
       todaySection.classList = 'todayForecast';
+      addHistoryBtn();
     }).catch(error => alert(error));
 }
+
+// function that render forecast section
 
 function renderForcast() {
   forecastSection.textContent = '';
     fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`)
-    .then(response => response.json())
+    .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json()
+  })
     .then((data) => {
       fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${lon = data[0].lon}&appid=${apiKey}&units=metric`)
       .then(response => response.json())
@@ -83,34 +120,21 @@ function renderForcast() {
             cardEl.append(cardBodyEl);
             forecastSection.append(cardEl);
           }
-    });
+    }).catch(error => alert(error));
     });
 }
+
+// add event listener to search button
 
 searchBtn.addEventListener('click', function (e) {
   e.preventDefault();
   city = searchInput.value.trim();
-  if (!city.match(/[A-Za-z]/) || (city === '')) {
-    alert('Please enter a city and use only letters (no numbers)');
-    return
-  }
-
-  if (city.charAt(0) !== city.charAt(0).toUpperCase()) {
-    city = city.charAt(0).toUpperCase() + city.slice(1);
-  }
-  if (!historyArr.includes(city)) {
-      historyArr.push(city);
-      const historyEl = document.createElement('button');
-      historyEl.classList = 'btn btn-secondary';
-      historyEl.textContent = city;
-      historySection.appendChild(historyEl);
-      localStorage.setItem('locations', JSON.stringify(historyArr));
-      }
   renderTodayWeather();
   renderForcast();
+  searchInput.value = '';
 });
 
-renderHistory();
+// add event listener to history section
 
 historySection.addEventListener('click', function (e) {
   e.preventDefault();
@@ -122,3 +146,5 @@ historySection.addEventListener('click', function (e) {
   renderTodayWeather();
   renderForcast();
 })
+
+renderHistory();
