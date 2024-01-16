@@ -1,4 +1,34 @@
-# Module 8 Server-Side APIs: Weather Dashboard
+# Weather Dashboard
+
+## Description
+
+This is a weather dashboard with form inputs that enables traveler to see the weather outlook for multiple cities so that they can plan a trip accordingly
+
+- When a user searches for a city they are presented with current and future conditions for that city and that city is added to the search history
+- When a user views the current weather conditions for that city they are presented with:
+  - The city name
+  - The date
+  - An icon representation of weather conditions
+  - The temperature
+  - The humidity
+  - The wind speed
+- When a user view future weather conditions for that city they are presented with a 5-day forecast that displays:
+  - The date
+  - An icon representation of weather conditions
+  - The temperature
+  - The humidity
+- When a user click on a city in the search history they are again presented with current and future conditions for that city
+  HTML, CSS, Java Script, Bootstrap, Dayjs and API (https://openweathermap.org/) were used in the development of this application.
+
+**Here is the link to this project** https://23birola.github.io/weather-dashboard-pobedynska/
+
+**Here is the project demo**
+
+![game demo](/assets/images/demo.png)
+
+## License
+
+This project is licensed under the MIT License. For details, please see the LICENSE file. [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Your Task
 
@@ -65,45 +95,3 @@ This Challenge is graded based on the following criteria:
   - Uses the OpenWeather API to retrieve weather data.
 
   - Uses `localStorage` to store persistent data.
-
-### Deployment: 32%
-
-- Application deployed at live URL.
-
-- Application loads with no errors.
-
-- Application GitHub URL submitted.
-
-- GitHub repository that contains application code.
-
-### Application Quality: 15%
-
-- Application user experience is intuitive and easy to navigate.
-
-- Application user interface style is clean and polished.
-
-- Application resembles the mock-up functionality provided in the homework instructions.
-
-### Repository Quality: 13%
-
-- Repository has a unique name.
-
-- Repository follows best practices for file structure and naming conventions.
-
-- Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
-
-- Repository contains multiple descriptive commit messages.
-
-- Repository contains quality readme file with description, screenshot, and link to deployed application.
-
-## Review
-
-You are required to submit BOTH of the following for review:
-
-- The URL of the functional, deployed application.
-
-- The URL of the GitHub repository. Give the repository a unique name and include a readme describing the project.
-
----
-
-© 2023 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.

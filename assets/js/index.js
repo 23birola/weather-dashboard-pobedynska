@@ -89,10 +89,14 @@ function renderForcast() {
 
 searchBtn.addEventListener('click', function (e) {
   e.preventDefault();
-  city = searchInput.value;
-  if (city === '') {
-    alert(`Insert city`);
-    return;
+  city = searchInput.value.trim();
+  if (!city.match(/[A-Za-z]/) || (city === '')) {
+    alert('Please enter a city and use only letters (no numbers)');
+    return
+  }
+
+  if (city.charAt(0) !== city.charAt(0).toUpperCase()) {
+    city = city.charAt(0).toUpperCase() + city.slice(1);
   }
   if (!historyArr.includes(city)) {
       historyArr.push(city);
